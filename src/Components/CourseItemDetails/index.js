@@ -18,10 +18,18 @@ class CourseItemDetails extends Component {
     this.getVideoData()
   }
 
+  getFormattedData = data => ({
+    name: data.name,
+    imageUrl: data.image_url,
+    id: data.id,
+    description: data.description,
+  })
+
   getVideoData = async () => {
     const {match} = this.props
     const {params} = match
     const {id} = params
+    console.log(id)
     this.setState({
       apiStatus: apiStatusConstants.inProgress,
     })
@@ -32,12 +40,19 @@ class CourseItemDetails extends Component {
       const fetchedData = await response.json()
       console.log('items', fetchedData)
 
-      const updatedData = fetchedData.course_details.map(eachVideo => ({
-        name: eachVideo.name,
-        imageUrl: eachVideo.image_url,
-        id: eachVideo.id,
-        description: eachVideo.description,
-      }))
+      //   const updatedData = fetchedData.course_details.map(eachVideo => ({
+      //     name: eachVideo.name,
+      //     imageUrl: eachVideo.image_url,
+      //     id: eachVideo.id,
+      //     description: eachVideo.description,
+      //   }))
+
+      //   const updatedData = fetchedData.course_details
+      //     name: eachVideo.name,
+      //     logoUrl: eachVideo.logo_url,
+      //     id: eachVideo.id,
+      //   }))
+      const updatedData = this.getFormattedData(fetchedData.course_details)
       this.setState({
         productsData: updatedData,
         apiStatus: apiStatusConstants.success,
